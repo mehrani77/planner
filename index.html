@@ -1,552 +1,191 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>برنامه روزانه محمد</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
-    }
-
+<meta charset="UTF-8">
+<title>برنامه‌ریزی‌ها</title>
+<style>
     body {
-      margin: 0;
-      background: #f3f7ff;
-      color: #0f172a;
-      display: flex;
-      justify-content: center;
+        font-family: sans-serif;
+        background: #ffffff;
+        margin: 0;
+        padding: 20px;
+        color: #000;
     }
 
-    .app {
-      width: 100%;
-      max-width: 900px;
-      padding: 16px;
-    }
-
-    .card {
-      background: #ffffff;
-      border-radius: 16px;
-      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
-      padding: 16px 20px;
-      margin-bottom: 16px;
-    }
-
+    /* هدر */
     .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    .header h1 {
+        font-size: 32px;
+        margin: 0;
+        font-weight: bold;
+        color: #000;
+    }
+    .header h2 {
+        font-size: 16px;
+        margin: 5px 0 0 0;
+        color: #444;
     }
 
-    .title {
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: #0f172a;
+    /* انتخاب ماه و هفته */
+    .selectors {
+        text-align: center;
+        margin-bottom: 25px;
+    }
+    select {
+        padding: 10px;
+        margin: 5px;
+        width: 150px;
+        border: 1px solid #aaa;
+        border-radius: 8px;
+        font-size: 14px;
+        text-align: center;
     }
 
-    .subtitle {
-      font-size: 0.9rem;
-      color: #64748b;
-    }
-
-    .pill {
-      background: #e0f2fe;
-      color: #0369a1;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.8rem;
-      white-space: nowrap;
-    }
-
+    /* بخش‌ها */
     .section-title {
-      font-size: 1rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: #0f172a;
+        font-size: 20px;
+        margin-top: 25px;
+        margin-bottom: 10px;
+        font-weight: bold;
     }
 
-    .section-subtitle {
-      font-size: 0.8rem;
-      color: #64748b;
-      margin-bottom: 8px;
+    /* ورودی‌ها */
+    .task-input {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .task-input input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #aaa;
+        border-radius: 8px;
+    }
+    .task-input button {
+        padding: 10px 15px;
+        background: #4da3ff;
+        border: none;
+        color: #fff;
+        border-radius: 8px;
+        cursor: pointer;
     }
 
-    .month-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
+    /* لیست کارها */
+    .task-list div {
+        background: #f5f5f5;
+        padding: 10px;
+        margin-bottom: 8px;
+        border-radius: 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .task-list button {
+        background: red;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 6px;
+        cursor: pointer;
     }
 
-    .month-card {
-      border-radius: 12px;
-      padding: 10px;
-      background: #eff6ff;
-      border: 1px solid transparent;
-      cursor: pointer;
-      transition: 0.15s;
+    /* عادت‌ها */
+    .habit {
+        display: flex;
+        align-items: center;
+        background: #f5f5f5;
+        padding: 10px;
+        border-radius: 8px;
+        margin-bottom: 8px;
     }
-
-    .month-card.active {
-      border-color: #2563eb;
-      background: #dbeafe;
+    .habit input[type="text"] {
+        flex: 1;
+        padding: 8px;
+        border: 1px solid #aaa;
+        border-radius: 6px;
+        margin-left: 10px;
     }
-
-    .month-name {
-      font-weight: 600;
-      margin-bottom: 4px;
-      color: #1d4ed8;
-    }
-
-    .month-desc {
-      font-size: 0.8rem;
-      color: #64748b;
-    }
-
-    .week-list,
-    .day-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .chip {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid #cbd5f5;
-      background: #eff6ff;
-      font-size: 0.8rem;
-      cursor: pointer;
-      transition: 0.15s;
-    }
-
-    .chip.active {
-      background: #2563eb;
-      color: #ffffff;
-      border-color: #1d4ed8;
-    }
-
-    .planner-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .date-box {
-      font-size: 0.85rem;
-      color: #0f172a;
-      background: #eff6ff;
-      border-radius: 999px;
-      padding: 4px 10px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .date-box span {
-      font-weight: 600;
-      color: #1d4ed8;
-    }
-
-    .tasks {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      margin-bottom: 12px;
-    }
-
-    .task-item {
-      padding: 8px 10px;
-      border-radius: 10px;
-      background: #f8fafc;
-      border: 1px solid #e2e8f0;
-    }
-
-    .task-top {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 4px;
-    }
-
-    .task-title {
-      font-size: 0.9rem;
-      font-weight: 500;
-    }
-
-    .checkbox {
-      width: 18px;
-      height: 18px;
-      border-radius: 6px;
-      border: 1.5px solid #94a3b8;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      font-size: 0.8rem;
-      color: #2563eb;
-    }
-
-    .checkbox.checked {
-      background: #2563eb;
-      border-color: #1d4ed8;
-      color: #ffffff;
-    }
-
-    .task-note {
-      width: 100%;
-      border-radius: 8px;
-      border: 1px solid #e2e8f0;
-      padding: 6px 8px;
-      font-size: 0.8rem;
-      outline: none;
-      background: #ffffff;
-    }
-
-    .task-note:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 0 1px #bfdbfe;
-    }
-
-    .field {
-      width: 100%;
-      border-radius: 10px;
-      border: 1px solid #e2e8f0;
-      padding: 8px 10px;
-      font-size: 0.85rem;
-      outline: none;
-      background: #f8fafc;
-      margin-bottom: 6px;
-    }
-
-    .field:focus {
-      border-color: #2563eb;
-      background: #ffffff;
-      box-shadow: 0 0 0 1px #bfdbfe;
-    }
-
-    .field-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .field-row .field {
-      flex: 1;
-      min-width: 120px;
-    }
-
-    .textarea {
-      width: 100%;
-      min-height: 100px;
-      border-radius: 12px;
-      border: 1px solid #e2e8f0;
-      padding: 8px 10px;
-      font-size: 0.85rem;
-      outline: none;
-      background: #f8fafc;
-      resize: vertical;
-    }
-
-    .textarea:focus {
-      border-color: #2563eb;
-      background: #ffffff;
-      box-shadow: 0 0 0 1px #bfdbfe;
-    }
-
-    @media (max-width: 600px) {
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .planner-header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-    }
-  </style>
+</style>
 </head>
 
 <body>
-  <div class="app">
-    <div class="card">
-      <div class="header">
-        <div>
-          <div class="title">برنامه سه‌ماهه</div>
-          <div class="subtitle">از سطح ماهانه تا روزانه، مخصوص خودت</div>
-        </div>
-        <div class="pill">نسخه وب شخصی</div>
-      </div>
 
-      <div>
-        <div class="section-title">انتخاب ماه</div>
-        <div class="section-subtitle">یکی از سه ماه رو انتخاب کن</div>
-        <div class="month-grid" id="monthGrid"></div>
-      </div>
+<!-- هدر -->
+<div class="header">
+    <h1>برنامه‌ریزی‌ها</h1>
+    <h2>Mohammad Mehrani</h2>
+</div>
 
-      <hr style="border:none;border-top:1px solid #e2e8f0;margin:14px 0;" />
+<!-- انتخاب ماه و هفته -->
+<div class="selectors">
+    <select id="month">
+        <option>ماه ۱</option>
+        <option>ماه ۲</option>
+        <option>ماه ۳</option>
+    </select>
 
-      <div>
-        <div class="section-title">انتخاب هفته</div>
-        <div class="section-subtitle">بعد از انتخاب ماه، یکی از هفته‌ها رو انتخاب کن</div>
-        <div class="week-list" id="weekList"></div>
-      </div>
+    <select id="week">
+        <option>هفته ۱</option>
+        <option>هفته ۲</option>
+        <option>هفته ۳</option>
+        <option>هفته ۴</option>
+    </select>
+</div>
 
-      <hr style="border:none;border-top:1px solid #e2e8f0;margin:14px 0;" />
+<!-- کارهای اصلی روزانه -->
+<div class="section-title">کارهای اصلی روزانه</div>
 
-      <div>
-        <div class="section-title">انتخاب روز</div>
-        <div class="section-subtitle">بعد از انتخاب هفته، روز مورد نظرت رو انتخاب کن</div>
-        <div class="day-list" id="dayList"></div>
-      </div>
+<div class="task-input">
+    <input id="taskInput" type="text" placeholder="کار جدید...">
+    <button onclick="addTask()">افزودن</button>
+</div>
+
+<div class="task-list" id="taskList">
+    <!-- مورد جدید که گفتی اضافه کنم -->
+    <div>
+        <span>استوک مهاباد</span>
+        <button onclick="this.parentElement.remove()">حذف</button>
     </div>
+</div>
 
-    <div class="card">
-      <div class="planner-header">
-        <div>
-          <div class="section-title" id="plannerTitle">برنامه روزانه</div>
-          <div class="section-subtitle" id="plannerSubtitle">یک روز رو از بالا انتخاب کن</div>
-        </div>
-        <div class="date-box">
-          تاریخ:
-          <span id="plannerDate">—</span>
-        </div>
-      </div>
+<!-- عادت‌ها -->
+<div class="section-title">عادت‌ها</div>
 
-      <div class="section-title">کارهای اصلی امروز</div>
-      <div class="tasks" id="taskList"></div>
+<div class="habit">
+    <input type="checkbox">
+    <input type="text" value="خواب">
+</div>
 
-      <div class="section-title">اولویت‌های امروز</div>
-      <div class="field-row">
-        <input class="field" placeholder="اولویت ۱" />
-        <input class="field" placeholder="اولویت ۲" />
-        <input class="field" placeholder="اولویت ۳" />
-      </div>
+<div class="habit">
+    <input type="checkbox">
+    <input type="text" value="ورزش">
+</div>
 
-      <div class="section-title">ردیاب عادت‌ها</div>
-      <div class="field-row">
-        <label class="field">خواب</label>
-        <label class="field">ورزش</label>
-        <label class="field">مطالعه</label>
-      </div>
+<div class="habit">
+    <input type="checkbox">
+    <input type="text" value="مطالعه">
+</div>
 
-      <div class="section-title">جمله انگیزشی</div>
-      <input class="field" placeholder="مثلاً: هر روز یک فرصت تازه‌ست" />
+<script>
+function addTask() {
+    let input = document.getElementById("taskInput");
+    if (input.value.trim() === "") return;
 
-      <div class="section-title">برنامه غذایی</div>
-      <div class="field-row">
-        <input class="field" placeholder="صبحانه" />
-        <input class="field" placeholder="ناهار" />
-        <input class="field" placeholder="شام" />
-      </div>
+    let list = document.getElementById("taskList");
 
-      <div class="section-title">نتیجه امروز</div>
-      <textarea class="textarea" placeholder="جمع‌بندی، احساسات، نکات مهم امروز را اینجا بنویس..."></textarea>
-    </div>
-  </div>
+    let item = document.createElement("div");
+    item.innerHTML = `
+        <span>${input.value}</span>
+        <button onclick="this.parentElement.remove()">حذف</button>
+    `;
 
-  <script>
-    const months = [
-      { id: 1, name: "ماه اول", desc: "شروع مسیر" },
-      { id: 2, name: "ماه دوم", desc: "ادامه و تثبیت" },
-      { id: 3, name: "ماه سوم", desc: "جمع‌بندی و ارزیابی" }
-    ];
+    list.appendChild(item);
+    input.value = "";
+}
+</script>
 
-    const weeks = [1, 2, 3, 4, 5];
-    const days = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه"];
-
-    let selectedMonth = null;
-    let selectedWeek = null;
-    let selectedDayIndex = null;
-
-    const monthGrid = document.getElementById("monthGrid");
-    const weekList = document.getElementById("weekList");
-    const dayList = document.getElementById("dayList");
-
-    const plannerTitle = document.getElementById("plannerTitle");
-    const plannerSubtitle = document.getElementById("plannerSubtitle");
-    const plannerDate = document.getElementById("plannerDate");
-    const taskList = document.getElementById("taskList");
-
-    const baseTasks = [
-      "پایتون",
-      "رضا راد",
-      "CEH",
-      "گویندگی",
-      "فن بیان",
-      "زبان انگلیسی",
-      "هوش مصنوعی"
-    ];
-
-    function getStorageKey() {
-      if (!selectedMonth || !selectedWeek || selectedDayIndex === null) return null;
-      return `planner_m${selectedMonth}_w${selectedWeek}_d${selectedDayIndex}`;
-    }
-
-    function saveData() {
-      const key = getStorageKey();
-      if (!key) return;
-
-      const tasksData = Array.from(taskList.querySelectorAll(".task-item")).map(item => {
-        const checkbox = item.querySelector(".checkbox");
-        const note = item.querySelector(".task-note");
-        return {
-          checked: checkbox.classList.contains("checked"),
-          note: note.value || ""
-        };
-      });
-
-      const data = {
-        tasks: tasksData
-      };
-
-      localStorage.setItem(key, JSON.stringify(data));
-    }
-
-    function loadData() {
-      const key = getStorageKey();
-      if (!key) return;
-
-      const raw = localStorage.getItem(key);
-      if (!raw) return;
-
-      const data = JSON.parse(raw);
-
-      const items = Array.from(taskList.querySelectorAll(".task-item"));
-      data.tasks?.forEach((t, index) => {
-        const item = items[index];
-        if (!item) return;
-        const checkbox = item.querySelector(".checkbox");
-        const note = item.querySelector(".task-note");
-        if (t.checked) {
-          checkbox.classList.add("checked");
-          checkbox.textContent = "✓";
-        }
-        if (t.note) note.value = t.note;
-      });
-    }
-
-    function renderMonths() {
-      monthGrid.innerHTML = "";
-      months.forEach((m) => {
-        const div = document.createElement("div");
-        div.className = "month-card" + (selectedMonth === m.id ? " active" : "");
-        div.innerHTML = `
-          <div class="month-name">${m.name}</div>
-          <div class="month-desc">${m.desc}</div>
-        `;
-        div.onclick = () => {
-          selectedMonth = m.id;
-          selectedWeek = null;
-          selectedDayIndex = null;
-          renderMonths();
-          renderWeeks();
-          renderDays();
-          updatePlannerHeader();
-          taskList.innerHTML = "";
-        };
-        monthGrid.appendChild(div);
-      });
-    }
-
-    function renderWeeks() {
-      weekList.innerHTML = "";
-      if (!selectedMonth) return;
-      weeks.forEach((w) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "chip" + (selectedWeek === w ? " active" : "");
-        btn.textContent = `هفته ${w}`;
-        btn.onclick = () => {
-          selectedWeek = w;
-          selectedDayIndex = null;
-          renderWeeks();
-          renderDays();
-          updatePlannerHeader();
-          taskList.innerHTML = "";
-        };
-        weekList.appendChild(btn);
-      });
-    }
-
-    function renderDays() {
-      dayList.innerHTML = "";
-      if (!selectedWeek) return;
-      days.forEach((d, index) => {
-        const btn = document.createElement("button");
-        btn.type = "button";
-        btn.className = "chip" + (selectedDayIndex === index ? " active" : "");
-        btn.textContent = d;
-        btn.onclick = () => {
-          selectedDayIndex = index;
-          renderDays();
-          updatePlannerHeader();
-          renderTasks();
-          loadData();
-        };
-        dayList.appendChild(btn);
-      });
-    }
-
-    function updatePlannerHeader() {
-      if (!selectedMonth || !selectedWeek || selectedDayIndex === null) {
-        plannerTitle.textContent = "برنامه روزانه";
-        plannerSubtitle.textContent = "یک ماه، هفته و روز را از بالا انتخاب کن";
-        plannerDate.textContent = "—";
-        return;
-      }
-
-      const monthName = months.find((m) => m.id === selectedMonth).name;
-      const weekName = `هفته ${selectedWeek}`;
-      const dayName = days[selectedDayIndex];
-
-      plannerTitle.textContent = `برنامه روزانه - ${dayName}`;
-      plannerSubtitle.textContent = `${monthName} • ${weekName}`;
-      plannerDate.textContent = `${dayName} - ${weekName} - ${monthName}`;
-    }
-
-    function renderTasks() {
-      taskList.innerHTML = "";
-      baseTasks.forEach((title) => {
-        const wrapper = document.createElement("div");
-        wrapper.className = "task-item";
-
-        const top = document.createElement("div");
-        top.className = "task-top";
-
-        const checkbox = document.createElement("div");
-        checkbox.className = "checkbox";
-        checkbox.textContent = "";
-        checkbox.onclick = () => {
-          checkbox.classList.toggle("checked");
-          checkbox.textContent = checkbox.classList.contains("checked") ? "✓" : "";
-          saveData();
-        };
-
-        const label = document.createElement("div");
-        label.className = "task-title";
-        label.textContent = title;
-
-        top.appendChild(checkbox);
-        top.appendChild(label);
-
-        const note = document.createElement("input");
-        note.className = "task-note";
-        note.placeholder = "توضیح / نکته برای این مورد...";
-        note.addEventListener("input", saveData);
-
-        wrapper.appendChild(top);
-        wrapper.appendChild(note);
-        taskList.appendChild(wrapper);
-      });
-    }
-
-    renderMonths();
-  </script>
 </body>
 </html>
