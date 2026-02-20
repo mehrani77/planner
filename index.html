@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <title>برنامه‌ریزی محمد</title>
+
 <style>
     body {
         font-family: sans-serif;
@@ -112,17 +113,27 @@
 </div>
 
 <div class="selectors">
-    <select id="month">
+    <select id="month" onchange="saveData()">
         <option>ماه اول</option>
         <option>ماه دوم</option>
         <option>ماه سوم</option>
     </select>
 
-    <select id="week">
+    <select id="week" onchange="saveData()">
         <option>هفته ۱</option>
         <option>هفته ۲</option>
         <option>هفته ۳</option>
         <option>هفته ۴</option>
+    </select>
+
+    <select id="day" onchange="saveData()">
+        <option>روز ۱</option>
+        <option>روز ۲</option>
+        <option>روز ۳</option>
+        <option>روز ۴</option>
+        <option>روز ۵</option>
+        <option>روز ۶</option>
+        <option>روز ۷</option>
     </select>
 </div>
 
@@ -133,31 +144,68 @@
     <button onclick="addTask()">افزودن</button>
 </div>
 
-<div class="task-list" id="taskList">
-    <div>
-        <span>استوک مهاباد</span>
-        <button onclick="this.parentElement.remove()">حذف</button>
-    </div>
-</div>
+<div class="task-list" id="taskList"></div>
 
 <div class="section-title">عادت‌ها</div>
 
 <div class="habit">
-    <input type="checkbox">
-    <input type="text" value="خواب">
+    <input type="checkbox" onchange="saveData()">
+    <input type="text" value="خواب" oninput="saveData()">
 </div>
 
 <div class="habit">
-    <input type="checkbox">
-    <input type="text" value="ورزش">
+    <input type="checkbox" onchange="saveData()">
+    <input type="text" value="ورزش" oninput="saveData()">
 </div>
 
 <div class="habit">
-    <input type="checkbox">
-    <input type="text" value="مطالعه">
+    <input type="checkbox" onchange="saveData()">
+    <input type="text" value="مطالعه" oninput="saveData()">
 </div>
 
 <script>
+function saveData() {
+    let data = {
+        month: document.getElementById("month").value,
+        week: document.getElementById("week").value,
+        day: document.getElementById("day").value,
+        tasks: document.getElementById("taskList").innerHTML,
+        habits: []
+    };
+
+    document.querySelectorAll(".habit").forEach(h => {
+        data.habits.push({
+            checked: h.querySelector("input[type='checkbox']").checked,
+            text: h.querySelector("input[type='text']").value
+        });
+    });
+
+    localStorage.setItem("plannerData", JSON.stringify(data));
+}
+
+function loadData() {
+    let data = JSON.parse(localStorage.getItem("plannerData"));
+    if (!data) {
+        document.getElementById("taskList").innerHTML = `
+            <div>
+                <span>استوک مهاباد</span>
+                <button onclick="this.parentElement.remove(); saveData()">حذف</button>
+            </div>`;
+        return;
+    }
+
+    document.getElementById("month").value = data.month;
+    document.getElementById("week").value = data.week;
+    document.getElementById("day").value = data.day;
+    document.getElementById("taskList").innerHTML = data.tasks;
+
+    let habits = document.querySelectorAll(".habit");
+    data.habits.forEach((h, i) => {
+        habits[i].querySelector("input[type='checkbox']").checked = h.checked;
+        habits[i].querySelector("input[type='text']").value = h.text;
+    });
+}
+
 function addTask() {
     let input = document.getElementById("taskInput");
     if (input.value.trim() === "") return;
@@ -167,12 +215,15 @@ function addTask() {
     let item = document.createElement("div");
     item.innerHTML = `
         <span>${input.value}</span>
-        <button onclick="this.parentElement.remove()">حذف</button>
+        <button onclick="this.parentElement.remove(); saveData()">حذف</button>
     `;
 
     list.appendChild(item);
     input.value = "";
+    saveData();
 }
+
+loadData();
 </script>
 
 </body>
