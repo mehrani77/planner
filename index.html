@@ -3,7 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <title>برنامه‌ریزی محمد</title>
-
 <style>
     body {
         font-family: sans-serif;
@@ -13,24 +12,21 @@
         color: #000;
     }
 
-    /* هدر */
     .header {
         text-align: center;
         margin-bottom: 25px;
     }
     .header h1 {
-        font-size: 30px;
+        font-size: 28px;
         margin: 0;
         font-weight: bold;
-        color: #000;
     }
     .header h2 {
-        font-size: 15px;
+        font-size: 14px;
         margin-top: 5px;
         color: #444;
     }
 
-    /* انتخاب ماه و هفته */
     .selectors {
         text-align: center;
         margin-bottom: 25px;
@@ -38,22 +34,20 @@
     select {
         padding: 10px;
         margin: 5px;
-        width: 150px;
+        width: 180px;
         border: 1px solid #aaa;
         border-radius: 8px;
         font-size: 14px;
         text-align: center;
     }
 
-    /* عنوان بخش‌ها */
     .section-title {
-        font-size: 20px;
+        font-size: 18px;
         margin-top: 25px;
         margin-bottom: 10px;
         font-weight: bold;
     }
 
-    /* ورودی کارها */
     .task-input {
         display: flex;
         gap: 10px;
@@ -74,7 +68,6 @@
         cursor: pointer;
     }
 
-    /* لیست کارها */
     .task-list div {
         background: #f5f5f5;
         padding: 10px;
@@ -93,7 +86,6 @@
         cursor: pointer;
     }
 
-    /* عادت‌ها */
     .habit {
         display: flex;
         align-items: center;
@@ -114,18 +106,16 @@
 
 <body>
 
-<!-- هدر -->
 <div class="header">
     <h1>برنامه‌ریزی محمد</h1>
     <h2>Mohammad Mehrani</h2>
 </div>
 
-<!-- انتخاب ماه و هفته -->
 <div class="selectors">
     <select id="month">
-        <option>ماه ۱</option>
-        <option>ماه ۲</option>
-        <option>ماه ۳</option>
+        <option>ماه اول</option>
+        <option>ماه دوم</option>
+        <option>ماه سوم</option>
     </select>
 
     <select id="week">
@@ -136,8 +126,7 @@
     </select>
 </div>
 
-<!-- کارهای اصلی روزانه -->
-<div class="section-title">کارهای اصلی روزانه</div>
+<div class="section-title">کارهای اصلی امروز</div>
 
 <div class="task-input">
     <input id="taskInput" type="text" placeholder="کار جدید...">
@@ -151,7 +140,6 @@
     </div>
 </div>
 
-<!-- عادت‌ها -->
 <div class="section-title">عادت‌ها</div>
 
 <div class="habit">
